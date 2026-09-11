@@ -1,0 +1,176 @@
+import json
+import sys
+from urllib.parse import urlparse
+
+DATASET_FILE = "data/D4_government_procedure_kb.json"
+
+REQUIRED_FIELDS = [
+    "source_id",
+    "title",
+    "department",
+    "state",
+    "district_scope",
+    "document_type",
+    "source_url",
+    "language",
+    "topic",
+    "procedure_type",
+    "document_categories",
+    "content",
+    "verified_status",
+    "source_authority",
+    "retrieved_at",
+    "data_origin"
+]
+
+VALID_STATUS = {
+    "search_confirmed",
+    "official_document_verified"
+}
+
+
+def is_valid_url(url):
+    try:
+        result = urlparse(url)
+        return result.scheme in ("http", "https") and bool(result.netloc)
+    except Exception:
+        return False
+
+
+def validate_dataset():
+    errors = []
+    warnings = []
+
+    # Load JSON
+    try:
+        with open(DATASET_FILE, "r", encoding="utf-8") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        print("ERROR: Dataset file not found.")
+        return False
+    except json.JSONDecodeError as e:
+        print("ERROR: Invalid JSON:", e)
+        return False
+
+    # Dataset must be a list
+    if not isinstance(data, list):
+        errors.append("Dataset root must be a JSON list.")
+
+    # Check number of records
+    if len(data) != 50:
+        warnings.append(
+            f"Expected 50 records, found {len(data)}."
+        )
+
+    source_ids = set()
+    source_urls = {}
+
+    for index, record in enumerate(data, start=1):
+
+        if not isinstance(record, dict):
+            errors.append(
+                f"Record {index}: Must be an object."
+            )
+            continue
+
+        # Required fields
+        for field in REQUIRED_FIELDS:
+            if field not in record:
+                errors.append(
+                    f"Record {index}: Missing '{field}'."
+                )
+            elif record[field] is None or record[field] == "":
+                errors.append(
+                    f"Record {index}: Empty '{field}'."
+                )
+
+        # Unique source ID
+        source_id = record.get("source_id")
+
+        if source_id:
+            if source_id in source_ids:
+                errors.append(
+                    f"Record {index}: Duplicate source_id '{source_id}'."
+                )
+            source_ids.add(source_id)
+
+        # URL validation
+        url = record.get("source_url")
+
+        if url and not is_valid_url(url):
+            errors.append(
+                f"Record {index}: Invalid URL '{url}'."
+            )
+
+        # Track shared URLs
+        if url:
+            source_urls.setdefault(url, []).append(
+                source_id
+            )
+
+        # Status validation
+        status = record.get("verified_status")
+
+        if status and status not in VALID_STATUS:
+            errors.append(
+                f"Record {index}: Invalid verified_status '{status}'."
+            )
+
+        # Authority validation
+        if record.get("source_authority") != "Government of Maharashtra":
+            warnings.append(
+                f"Record {index}: Check source authority."
+            )
+
+        # Categories must be a list
+        categories = record.get("document_categories")
+
+        if categories is not None and not isinstance(categories, list):
+            errors.append(
+                f"Record {index}: document_categories must be a list."
+            )
+
+    # Shared URLs are warnings, not automatic errors.
+    # Multiple government services can legitimately appear
+    # on the same official portal.
+    for url, ids in source_urls.items():
+        if len(ids) > 1:
+            warnings.append(
+                f"Shared source URL used by {len(ids)} records: {url}"
+            )
+
+    # Results
+    print("\nD4 DATASET VALIDATION")
+    print("=====================")
+    print("Records checked :", len(data))
+    print("Unique IDs      :", len(source_ids))
+    print("Errors          :", len(errors))
+    print("Warnings        :", len(warnings))
+
+    if errors:
+        print("\nERRORS")
+        print("------")
+
+        for error in errors:
+            print("[FAIL]", error)
+
+    if warnings:
+        print("\nWARNINGS")
+        print("--------")
+
+        for warning in warnings:
+            print("[WARN]", warning)
+
+    if errors:
+        print("\nVALIDATION FAILED")
+        return False
+
+    print("\nVALIDATION PASSED")
+    return True
+
+
+if __name__ == "__main__":
+
+    success = validate_dataset()
+
+    sys.exit(0 if success else 1)
