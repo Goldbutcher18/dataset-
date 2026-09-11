@@ -1,0 +1,14 @@
+D4 DATASET VALIDATION
+=====================
+Records checked : 50
+Unique IDs      : 50
+Errors          : 0
+Warnings        : 4
+
+WARNINGS
+--------
+[WARN] Shared source URL used by 2 records: https://bhulekh.mahabhumi.gov.in/
+[WARN] Shared source URL used by 3 records: https://mahabhumi.gov.in/Mahabhumilink/
+...
+
+VALIDATION PASSED
