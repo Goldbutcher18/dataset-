@@ -1,0 +1,87 @@
+import json
+from datetime import date
+
+records = []
+
+def add_record(source_id, title, department, topic, procedure_type, url):
+    record = {
+        "source_id": source_id,
+        "title": title,
+        "department": department,
+        "state": "Maharashtra",
+        "district_scope": "State-wide",
+        "document_type": "Official Procedure",
+        "source_url": url,
+        "publication_date": None,
+        "effective_date": None,
+        "language": "Marathi / English",
+        "topic": topic,
+        "procedure_type": procedure_type,
+        "document_categories": [topic],
+        "content": f"Official government information related to {procedure_type}.",
+        "verified_status": "search_confirmed",
+        "source_authority": "Government of Maharashtra",
+        "retrieved_at": str(date.today()),
+        "data_origin": "verified_public_source"
+    }
+
+    records.append(record)
+
+
+# Add D4 records
+add_record(
+    "MAH-712-001",
+    "7/12 Extract Service",
+    "Revenue and Forest Department",
+    "7/12",
+    "7/12 Land Record",
+    "https://bhulekh.mahabhumi.gov.in/"
+)
+
+add_record(
+    "MAH-8A-001",
+    "8A Extract Service",
+    "Revenue and Forest Department",
+    "8A",
+    "8A Land Record",
+    "https://bhulekh.mahabhumi.gov.in/"
+)
+
+add_record(
+    "MAH-MUTATION-001",
+    "Mutation / Ferfar Service",
+    "Revenue and Forest Department",
+    "Mutation",
+    "Mutation Application",
+    "https://mahabhumi.gov.in/Mahabhumilink/"
+)
+
+add_record(
+    "MAH-PROPERTY-001",
+    "Property Card Service",
+    "Revenue and Forest Department",
+    "Property Card",
+    "Property Card",
+    "https://bhulekh.mahabhumi.gov.in/"
+)
+
+
+# Display output
+print("D4 Government Procedure Knowledge Base")
+print("---------------------------------------")
+print("Total Records:", len(records))
+
+for record in records:
+    print("\nSource ID :", record["source_id"])
+    print("Title     :", record["title"])
+    print("Topic     :", record["topic"])
+    print("Procedure :", record["procedure_type"])
+    print("Status    :", record["verified_status"])
+    print("URL       :", record["source_url"])
+
+# Save as JSON
+with open("D4_government_procedure_kb.json", "w", encoding="utf-8") as file:
+    json.dump(records, file, indent=2, ensure_ascii=False)
+
+print("\nDataset successfully generated!")
+print("File: D4_government_procedure_kb.json")
