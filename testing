@@ -1,0 +1,104 @@
+import json
+import os
+
+DATASET_FILE = "D4_government_procedure_kb.json"
+
+REQUIRED_FIELDS = [
+    "source_id",
+    "title",
+    "department",
+    "state",
+    "source_url",
+    "topic",
+    "procedure_type",
+    "content",
+    "verified_status",
+    "source_authority",
+    "retrieved_at",
+    "data_origin"
+]
+
+
+def load_dataset():
+    assert os.path.exists(DATASET_FILE), \
+        "Dataset file does not exist"
+
+    with open(DATASET_FILE, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def test_dataset_is_list():
+    data = load_dataset()
+    assert isinstance(data, list)
+
+
+def test_records_exist():
+    data = load_dataset()
+    assert len(data) > 0
+
+
+def test_required_fields():
+    data = load_dataset()
+
+    for record in data:
+        for field in REQUIRED_FIELDS:
+            assert field in record, \
+                f"Missing field: {field}"
+
+
+def test_unique_source_ids():
+    data = load_dataset()
+
+    ids = [record["source_id"] for record in data]
+
+    assert len(ids) == len(set(ids)), \
+        "Duplicate source_id found"
+
+
+def test_verified_status():
+    data = load_dataset()
+
+    allowed_status = [
+        "search_confirmed",
+        "official_document_verified"
+    ]
+
+    for record in data:
+        assert record["verified_status"] in allowed_status
+
+
+def test_source_authority():
+    data = load_dataset()
+
+    for record in data:
+        assert record["source_authority"] == \
+            "Government of Maharashtra"
+
+
+if __name__ == "__main__":
+
+    data = load_dataset()
+
+    print("D4 DATASET TEST")
+    print("================")
+
+    test_dataset_is_list()
+    print("[PASS] Dataset is valid JSON list")
+
+    test_records_exist()
+    print("[PASS] Records exist")
+
+    test_required_fields()
+    print("[PASS] Required fields present")
+
+    test_unique_source_ids()
+    print("[PASS] Source IDs are unique")
+
+    test_verified_status()
+    print("[PASS] Verification status valid")
+
+    test_source_authority()
+    print("[PASS] Source authority valid")
+
+    print("\nALL TESTS PASSED")
+    print("Records tested:", len(data))
