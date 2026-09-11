@@ -1,0 +1,49 @@
+[
+  {
+    "source_id": "MAH-712-001",
+    "title": "7/12 Extract Service",
+    "department": "Revenue and Forest Department",
+    "state": "Maharashtra",
+    "district_scope": "State-wide",
+    "document_type": "Official Service",
+    "source_url": "https://bhulekh.mahabhumi.gov.in/",
+    "publication_date": null,
+    "effective_date": null,
+    "language": "Marathi / English",
+    "topic": "7/12",
+    "procedure_type": "7/12 Land Record",
+    "document_categories": [
+      "7/12",
+      "Land Records"
+    ],
+    "content": "Official Maharashtra government service for viewing land record information.",
+    "verified_status": "search_confirmed",
+    "source_authority": "Government of Maharashtra",
+    "retrieved_at": "2026-09-11",
+    "data_origin": "verified_public_source"
+  },
+
+  {
+    "source_id": "MAH-8A-001",
+    "title": "8A Extract Service",
+    "department": "Revenue and Forest Department",
+    "state": "Maharashtra",
+    "district_scope": "State-wide",
+    "document_type": "Official Service",
+    "source_url": "https://bhulekh.mahabhumi.gov.in/",
+    "publication_date": null,
+    "effective_date": null,
+    "language": "Marathi / English",
+    "topic": "8A",
+    "procedure_type": "8A Land Record",
+    "document_categories": [
+      "8A",
+      "Land Records"
+    ],
+    "content": "Official Maharashtra government service for accessing 8A land record information.",
+    "verified_status": "search_confirmed",
+    "source_authority": "Government of Maharashtra",
+    "retrieved_at": "2026-09-11",
+    "data_origin": "verified_public_source"
+  }
+]
