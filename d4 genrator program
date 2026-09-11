@@ -1,0 +1,120 @@
+import json
+from datetime import date
+
+DATASET_FILE = "D4_government_procedure_kb.json"
+
+records = [
+    {
+        "source_id": "MAH-712-001",
+        "title": "7/12 Extract Service",
+        "department": "Revenue and Forest Department",
+        "state": "Maharashtra",
+        "district_scope": "State-wide",
+        "document_type": "Official Service",
+        "source_url": "https://bhulekh.mahabhumi.gov.in/",
+        "publication_date": None,
+        "effective_date": None,
+        "language": "Marathi / English",
+        "topic": "7/12",
+        "procedure_type": "7/12 Land Record",
+        "document_categories": ["7/12", "Land Records"],
+        "content": "Official Maharashtra government service for viewing land record information.",
+        "verified_status": "search_confirmed",
+        "source_authority": "Government of Maharashtra",
+        "retrieved_at": str(date.today()),
+        "data_origin": "verified_public_source"
+    },
+
+    {
+        "source_id": "MAH-8A-001",
+        "title": "8A Extract Service",
+        "department": "Revenue and Forest Department",
+        "state": "Maharashtra",
+        "district_scope": "State-wide",
+        "document_type": "Official Service",
+        "source_url": "https://bhulekh.mahabhumi.gov.in/",
+        "publication_date": None,
+        "effective_date": None,
+        "language": "Marathi / English",
+        "topic": "8A",
+        "procedure_type": "8A Land Record",
+        "document_categories": ["8A", "Land Records"],
+        "content": "Official Maharashtra government service for accessing 8A land record information.",
+        "verified_status": "search_confirmed",
+        "source_authority": "Government of Maharashtra",
+        "retrieved_at": str(date.today()),
+        "data_origin": "verified_public_source"
+    },
+
+    {
+        "source_id": "MAH-MUTATION-001",
+        "title": "Mutation / Ferfar Service",
+        "department": "Revenue and Forest Department",
+        "state": "Maharashtra",
+        "district_scope": "State-wide",
+        "document_type": "Official Service",
+        "source_url": "https://mahabhumi.gov.in/Mahabhumilink/",
+        "publication_date": None,
+        "effective_date": None,
+        "language": "Marathi / English",
+        "topic": "Mutation",
+        "procedure_type": "Mutation Application",
+        "document_categories": ["Mutation", "Ferfar", "Land Records"],
+        "content": "Official Maharashtra government service related to mutation and Ferfar land record processes.",
+        "verified_status": "search_confirmed",
+        "source_authority": "Government of Maharashtra",
+        "retrieved_at": str(date.today()),
+        "data_origin": "verified_public_source"
+    }
+]
+
+
+def validate_dataset(data):
+    errors = []
+
+    ids = [record["source_id"] for record in data]
+
+    if len(ids) != len(set(ids)):
+        errors.append("Duplicate source_id found")
+
+    required_fields = [
+        "source_id",
+        "title",
+        "department",
+        "state",
+        "source_url",
+        "topic",
+        "procedure_type",
+        "content",
+        "verified_status",
+        "source_authority",
+        "retrieved_at",
+        "data_origin"
+    ]
+
+    for i, record in enumerate(data, start=1):
+        for field in required_fields:
+            if field not in record or not record[field]:
+                errors.append(
+                    f"Record {i}: Missing field '{field}'"
+                )
+
+    return errors
+
+
+# Validate
+errors = validate_dataset(records)
+
+if errors:
+    print("DATASET TEST FAILED")
+    for error in errors:
+        print("-", error)
+else:
+    with open(DATASET_FILE, "w", encoding="utf-8") as file:
+        json.dump(records, file, indent=2, ensure_ascii=False)
+
+    print("D4 DATASET GENERATED SUCCESSFULLY")
+    print("--------------------------------")
+    print("Total Records:", len(records))
+    print("Validation   : PASSED")
+    print("File         :", DATASET_FILE)
