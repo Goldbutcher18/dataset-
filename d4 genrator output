@@ -1,0 +1,34 @@
+D4 Government Procedure Knowledge Base
+---------------------------------------
+Total Records: 4
+
+Source ID : MAH-712-001
+Title     : 7/12 Extract Service
+Topic     : 7/12
+Procedure : 7/12 Land Record
+Status    : search_confirmed
+URL       : https://bhulekh.mahabhumi.gov.in/
+
+Source ID : MAH-8A-001
+Title     : 8A Extract Service
+Topic     : 8A
+Procedure : 8A Land Record
+Status    : search_confirmed
+URL       : https://bhulekh.mahabhumi.gov.in/
+
+Source ID : MAH-MUTATION-001
+Title     : Mutation / Ferfar Service
+Topic     : Mutation
+Procedure : Mutation Application
+Status    : search_confirmed
+URL       : https://mahabhumi.gov.in/Mahabhumilink/
+
+Source ID : MAH-PROPERTY-001
+Title     : Property Card Service
+Topic     : Property Card
+Procedure : Property Card
+Status    : search_confirmed
+URL       : https://bhulekh.mahabhumi.gov.in/
+
+Dataset successfully generated!
+File: D4_government_procedure_kb.json
