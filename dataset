@@ -1,0 +1,6 @@
+import json
+
+with open("datasets/D4_government_procedure_kb.json", "r", encoding="utf-8") as f:
+    d4 = json.load(f)
+
+print("D4 records:", len(d4))
