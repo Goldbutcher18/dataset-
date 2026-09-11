@@ -1,0 +1,11 @@
+D4 DATASET TEST
+================
+[PASS] Dataset is valid JSON list
+[PASS] Records exist
+[PASS] Required fields present
+[PASS] Source IDs are unique
+[PASS] Verification status valid
+[PASS] Source authority valid
+
+ALL TESTS PASSED
+Records tested: 50
